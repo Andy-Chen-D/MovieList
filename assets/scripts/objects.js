@@ -31,14 +31,14 @@ const renderMovies = (filter = '') => {
       info,
       ...other
     } = movie
-    // const {
-    //   title: titlevalue
-    // } = info
-    let {
-      getTitle 
-    } = movie
-    // getTitle=getTitle.bind(movie)
-    let text =movie.getTitle() + ' - '
+    const {
+      title: titlevalue
+    } = info
+    // let {
+    //   getTitle
+    // } = movie
+    // getTitle = getTitle.bind(movie)
+    let text = titlevalue + ' - '
     console.log("剩下屬性加值 " + other)
     for (const key in info) {
       if (key !== 'title')
@@ -57,8 +57,8 @@ const addMovieHandler = () => {
   const extraName = document.getElementById('extra-name').value
   const extraValue = document.getElementById('extra-value').value
   console.log(title)
-
-  if (title.trim() === '' ||
+  // title.trim() === '' ||
+  if (
     extraName.trim() === '' ||
     extraValue.trim() === '') {
     return
@@ -66,29 +66,52 @@ const addMovieHandler = () => {
   }
   const newMovie = {
     info: {
-      title,
+      //定義進這
+      set title(val) {
+        if (val.trim() === '') {
+          this._title = 'DEFAULT'
+          return;
+        }
+        this._title = val
+      },
+      //取得 進這
+      get title() {
+        return this._title.toUpperCase()
+        // return this._title
+      },
       //動態屬性
       [extraName]: extraValue
     },
-    id: Math.random().toString(),
-    // getTitle(): function 
-    getTitle() {
-            console.log(this)
-      const value = this.info.title
-
-      return value.toUpperCase()
-    }
+    id: Math.random().toString()
   }
+    // getTitle: function () {
+    //   // getTitle:()=> {
+    //   console.log(this)
+    //   const value = this.info.title
+
+    //   return value.toUpperCase()
+    // }
+  // }
+  
+  //Setter使用 定義他進Setter函式裡
+  newMovie.info.title = title
+  //會跑getter
+  console.log(newMovie.info.title)
+
+
+
   movies.push(newMovie)
   console.log(movies)
   renderMovies()
 
 }
 
+//fuction this會是指向 DOM call他event的物件
+//()=> 會是gobal 他不會綁定任何物件
 const searchMovieHandler = () => {
   //取值
   const filterterm = document.getElementById('filter-title').value
-
+  console.log(this)
   renderMovies(filterterm)
 
 };
