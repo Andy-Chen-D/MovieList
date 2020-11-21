@@ -34,10 +34,11 @@ const renderMovies = (filter = '') => {
     // const {
     //   title: titlevalue
     // } = info
-    // const {
-    //   getTitleToUpper
-    // } = movie
-    let text = movie.getTitle() + ' - '
+    let {
+      getTitle 
+    } = movie
+    // getTitle=getTitle.bind(movie)
+    let text =movie.getTitle() + ' - '
     console.log("剩下屬性加值 " + other)
     for (const key in info) {
       if (key !== 'title')
@@ -70,8 +71,11 @@ const addMovieHandler = () => {
       [extraName]: extraValue
     },
     id: Math.random().toString(),
-    getTitle: function () {
+    // getTitle(): function 
+    getTitle() {
+            console.log(this)
       const value = this.info.title
+
       return value.toUpperCase()
     }
   }
